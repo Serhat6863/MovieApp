@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return BlocListener<GuestBloc, GuestState>(
       listener: (context, state){
-        if(state.status.isLoaded){
+        if(state.status.isLoaded && state.guestSessionId != null){
           Future.delayed(
             const Duration(seconds: 3),
                 () => Navigator.pushReplacementNamed(context, '/home', arguments: state.guestSessionId)
