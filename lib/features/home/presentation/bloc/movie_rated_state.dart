@@ -1,0 +1,62 @@
+import '../../domain/entities/movie_rated_entities.dart';
+
+enum MovieRatedStatus { initial, loading, success, failure }
+
+extension MovieRatedStateX on MovieRatedStatus {
+  bool get isInitial => this == MovieRatedStatus.initial;
+  bool get isLoading => this == MovieRatedStatus.loading;
+  bool get isSuccess => this == MovieRatedStatus.success;
+  bool get isFailure => this == MovieRatedStatus.failure;
+}
+
+class MovieRatedState {
+  final MovieRatedStatus status;
+  final String message;
+  final List<MovieEntity> movieRatedList;
+
+  MovieRatedState({
+    required this.status,
+    required this.message,
+    required this.movieRatedList,
+  });
+
+  factory MovieRatedState.initial() => MovieRatedState(
+    status: MovieRatedStatus.initial,
+    message: '',
+    movieRatedList: [],
+  );
+
+  factory MovieRatedState.loading() => MovieRatedState(
+    status: MovieRatedStatus.loading,
+    message: '',
+    movieRatedList: [],
+  );
+
+  factory MovieRatedState.success(List<MovieEntity> movieRatedList) => MovieRatedState(
+    status: MovieRatedStatus.success,
+    message: '',
+    movieRatedList: movieRatedList,
+  );
+
+  factory MovieRatedState.failure(String message) => MovieRatedState(
+    status: MovieRatedStatus.failure,
+    message: message,
+    movieRatedList: [],
+  );
+
+
+  MovieRatedState copyWith({
+    MovieRatedStatus? status,
+    String? message,
+    List<MovieEntity>? movieRatedList,
+  }) {
+    return MovieRatedState(
+      status: status ?? this.status,
+      message: message ?? this.message,
+      movieRatedList: movieRatedList ?? this.movieRatedList,
+    );
+  }
+
+  @override
+  List<Object> get props => [status, message, movieRatedList];
+}
