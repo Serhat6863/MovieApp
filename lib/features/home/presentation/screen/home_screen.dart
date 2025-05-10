@@ -10,6 +10,9 @@ import '../../../../core/constant.dart';
 import '../bloc/movie_rated_bloc.dart';
 import '../bloc/movie_rated_event.dart';
 import '../bloc/movie_rated_state.dart';
+import '../bloc/person_bloc.dart';
+import '../bloc/person_event.dart';
+import '../bloc/person_state.dart';
 import '../bloc/tv_rated_event.dart';
 import '../widget/bottom_navigation.dart';
 
@@ -59,6 +62,7 @@ class _TestScreenState extends State<TestScreen> {
     super.initState();
     context.read<MovieRatedBloc>().add(GetMovieRatedEvent());
     context.read<TvRatedBloc>().add(GetTvRatedEvent());
+    context.read<PersonBloc>().add(GetPersonEvent());
   }
 
   @override
@@ -200,7 +204,103 @@ class _TestScreenState extends State<TestScreen> {
                     child: Text("No Data", style: TextStyle(color: Colors.red)),
                   );
                 },
-              )
+              ),
+
+
+              const SizedBox(height: 20,),
+
+              SectionHeaderRow(
+                text: "Top Actors",
+                textButton: "see all",
+              ),
+
+
+              BlocConsumer<PersonBloc, PersonState>(
+                listener: (context, state){
+                  if(state.status.isError){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                        backgroundColor: Colors.red,
+                      )
+                    );
+                  }
+                },
+                builder: (context, state){
+                  if(state.status.isLoading){
+                    return Center(child: CircularProgressIndicator());
+                  }else if(state.status.isError){
+                    return Center(
+                      child: Text(
+                        state.message,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    );
+                  }else if(state.status.isLoaded){
+                    return SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: state.personList.length,
+                        itemBuilder: (context, index){
+                          return Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 120,
+                                  height: 120,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container(
+                                          color: Colors.grey[300],
+                                          alignment: Alignment.center,
+                                          child: Icon(
+                                            Icons.person,
+                                            size: 50,
+                                            color: Colors.grey[700],
+                                          ),
+                                        );
+                                      },
+                                      "https://image.tmdb.org/t/p/w500${state.personList[index].profilePath}",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox(height: 10,),
+
+                                Text(
+                                  state.personList[index].name,
+                                  style: TextStyle(
+                                    color: kTextColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+
+                  return Text(
+                    "No Data",
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  );
+                },
+              ),
+
+
 
             ],
           ),

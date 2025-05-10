@@ -22,4 +22,11 @@ abstract class MediaApi {
     @Header("Authorization") String apiKey,
     @Path("time_window") String timeWindow,
   );
+
+  @GET("/trending/person/{time_window}")
+  Future<HttpResponse<dynamic>> getPerson(
+    @Query("language") String language,
+    @Header("Authorization") String apiKey,
+    @Path("time_window") String timeWindow,
+  );
 }
