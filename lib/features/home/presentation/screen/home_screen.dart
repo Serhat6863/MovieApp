@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/features/home/presentation/bloc/tv_rated_bloc.dart';
 import 'package:movie_app/features/home/presentation/bloc/tv_rated_state.dart';
+import 'package:movie_app/features/home/presentation/widget/custom_list_view.dart';
+import 'package:movie_app/features/home/presentation/widget/section_header_row.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../core/constant.dart';
@@ -96,31 +98,9 @@ class _TestScreenState extends State<TestScreen> {
                 ],
               ),
 
-              Row(
-                children: [
-                  Text(
-                    "Top Rated Movies",
-                    style: TextStyle(
-                      color: kTextColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-
-                  Spacer(),
-
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "See All",
-                      style: TextStyle(
-                        color: kTextColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
+              SectionHeaderRow(
+                text: "Top Rated Movies",
+                textButton: "see all",
               ),
 
               BlocConsumer<MovieRatedBloc, MovieRatedState>(
@@ -155,24 +135,8 @@ class _TestScreenState extends State<TestScreen> {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(6.0),
-                            child: SizedBox(
-                              height: 300,
-                              width: 200,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.network(
-                                  "https://image.tmdb.org/t/p/w500${state.movieRatedList[index].posterPath}",
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Center(
-                                      child: Icon(
-                                        Icons.error,
-                                        color: Colors.red,
-                                      ),
-                                    );
-                                  },
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                            child: CustomListView(
+                              imageUrl: "https://image.tmdb.org/t/p/w500${state.movieRatedList[index].posterPath}",
                             ),
                           );
                         },
@@ -188,36 +152,10 @@ class _TestScreenState extends State<TestScreen> {
 
               const SizedBox(height: 20,),
 
-              Row(
-                children: [
-
-                  Text(
-                    "Top Rated TV Shows",
-                    style: TextStyle(
-                      color: kTextColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-
-                  Spacer(),
-
-                  TextButton(
-                    onPressed: (){},
-                    child: Text(
-                      "see all",
-                      style: TextStyle(
-                        color: kTextColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
+              SectionHeaderRow(
+                text: "top Rated Tv Shows",
+                textButton: "see all",
               ),
-
-
-              const SizedBox(height: 20,),
 
               BlocConsumer<TvRatedBloc, TvRatedState>(
                 listener: (context, state){
@@ -250,24 +188,8 @@ class _TestScreenState extends State<TestScreen> {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(6.0),
-                            child: SizedBox(
-                              height: 300,
-                              width: 200,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image.network(
-                                  "https://image.tmdb.org/t/p/w500${state.tvRatedList[index].posterPath}",
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Center(
-                                      child: Icon(
-                                        Icons.error,
-                                        color: Colors.red,
-                                      ),
-                                    );
-                                  },
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                            child: CustomListView(
+                              imageUrl: "https://image.tmdb.org/t/p/w500${state.tvRatedList[index].posterPath}",
                             ),
                           );
                         },
