@@ -28,10 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocListener<GuestBloc, GuestState>(
       listener: (context, state){
         if(state.status.isLoaded && state.guestSessionId != null){
-          Future.delayed(
-            const Duration(seconds: 3),
-                () => Navigator.pushReplacementNamed(context, '/home', arguments: state.guestSessionId)
-          );
+            Navigator.pushReplacementNamed(context, '/home', arguments: state.guestSessionId);
         }else if(state.status.isError){
           print(state.message);
           ScaffoldMessenger.of(context).showSnackBar(

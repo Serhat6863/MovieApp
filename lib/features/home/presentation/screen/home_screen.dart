@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/features/home/presentation/bloc/tv_rated_bloc.dart';
+import 'package:movie_app/features/home/presentation/bloc/tv_rated_state.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../core/constant.dart';
+import '../bloc/movie_rated_bloc.dart';
+import '../bloc/movie_rated_event.dart';
+import '../bloc/movie_rated_state.dart';
+import '../bloc/tv_rated_event.dart';
 import '../widget/bottom_navigation.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
     TolScreen(),
   ];
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,14 +41,249 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-
-class TestScreen extends StatelessWidget {
+class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
 
   @override
+  State<TestScreen> createState() => _TestScreenState();
+}
+
+class _TestScreenState extends State<TestScreen> {
+  final CarouselController _controller = CarouselController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<MovieRatedBloc>().add(GetMovieRatedEvent());
+    context.read<TvRatedBloc>().add(GetTvRatedEvent());
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Test Screen", style: TextStyle(color: Colors.white, fontSize: 20),),
+    return SingleChildScrollView(
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "Hello",
+                    style: TextStyle(
+                      color: kTextColor,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+
+                  Spacer(),
+
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.search, color: kTextColor),
+                  ),
+                ],
+              ),
+
+              Row(
+                children: [
+                  Text(
+                    "Top Rated Movies",
+                    style: TextStyle(
+                      color: kTextColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+
+                  Spacer(),
+
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "See All",
+                      style: TextStyle(
+                        color: kTextColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              BlocConsumer<MovieRatedBloc, MovieRatedState>(
+                listener: (context, state) {
+                  if (state.status.isFailure) {
+                    print(state.message);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state.status.isLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state.status.isFailure) {
+                    return Center(
+                      child: Text(
+                        state.message,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    );
+                  } else if (state.status.isSuccess) {
+                    return SizedBox(
+                      height: 300,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: state.movieRatedList.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: SizedBox(
+                              height: 300,
+                              width: 200,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.network(
+                                  "https://image.tmdb.org/t/p/w500${state.movieRatedList[index].posterPath}",
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Center(
+                                      child: Icon(
+                                        Icons.error,
+                                        color: Colors.red,
+                                      ),
+                                    );
+                                  },
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return Center(
+                    child: Text("No Data", style: TextStyle(color: Colors.red)),
+                  );
+                },
+              ),
+
+
+              const SizedBox(height: 20,),
+
+              Row(
+                children: [
+
+                  Text(
+                    "Top Rated TV Shows",
+                    style: TextStyle(
+                      color: kTextColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+
+                  Spacer(),
+
+                  TextButton(
+                    onPressed: (){},
+                    child: Text(
+                      "see all",
+                      style: TextStyle(
+                        color: kTextColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+
+              const SizedBox(height: 20,),
+
+              BlocConsumer<TvRatedBloc, TvRatedState>(
+                listener: (context, state){
+                  if(state.status.isFailure){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                        backgroundColor: Colors.red,
+                      )
+                    );
+                  }
+                },
+                builder: (context, state){
+                  if(state.status.isLoading){
+                    return Center(child: CircularProgressIndicator());
+                  }else if(state.status.isFailure){
+                    return Text(
+                      state.message,
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    );
+                  }else if(state.status.isSuccess){
+                    return SizedBox(
+                      height: 300,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: state.tvRatedList.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: SizedBox(
+                              height: 300,
+                              width: 200,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.network(
+                                  "https://image.tmdb.org/t/p/w500${state.tvRatedList[index].posterPath}",
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Center(
+                                      child: Icon(
+                                        Icons.error,
+                                        color: Colors.red,
+                                      ),
+                                    );
+                                  },
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return Center(
+                    child: Text("No Data", style: TextStyle(color: Colors.red)),
+                  );
+                },
+              )
+
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -52,7 +294,10 @@ class TestScreenSecond extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("Test Screen Second", style: TextStyle(color: Colors.white, fontSize: 20),),
+      child: Text(
+        "Test Screen Second",
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      ),
     );
   }
 }
@@ -62,7 +307,12 @@ class TalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("Test Screen Third", style: TextStyle(color: Colors.white, fontSize: 20),));
+    return Center(
+      child: Text(
+        "Test Screen Third",
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      ),
+    );
   }
 }
 
@@ -71,7 +321,11 @@ class TolScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("Test Screen Fourth", style: TextStyle(color: Colors.white, fontSize: 20),));
+    return Center(
+      child: Text(
+        "Test Screen Fourth",
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      ),
+    );
   }
 }
-

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'movie_rated_api.dart';
+part of 'media_api.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'movie_rated_api.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
-class _MovieRatedApi implements MovieRatedApi {
-  _MovieRatedApi(
+class _MediaApi implements MediaApi {
+  _MediaApi(
     this._dio, {
     this.baseUrl,
     this.errorLogger,
@@ -24,7 +24,7 @@ class _MovieRatedApi implements MovieRatedApi {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<HttpResponse<List<MovieRatedModel>>> getMovieRated(
+  Future<HttpResponse<dynamic>> getMovieRated(
     String language,
     String apiKey,
     String timeWindow,
@@ -34,34 +34,57 @@ class _MovieRatedApi implements MovieRatedApi {
     final _headers = <String, dynamic>{r'Authorization': apiKey};
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
-    final _options =
-        _setStreamType<HttpResponse<List<MovieRatedModel>>>(Options(
+    final _options = _setStreamType<HttpResponse<dynamic>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              '/trending/movie/${timeWindow}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<MovieRatedModel> _value;
-    try {
-      _value = _result.data!
-          .map((dynamic i) =>
-              MovieRatedModel.fromJson(i as Map<String, dynamic>))
-          .toList();
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
+        .compose(
+          _dio.options,
+          '/trending/movie/${timeWindow}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<dynamic>> getTvRated(
+    String language,
+    String apiKey,
+    String timeWindow,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'language': language};
+    final _headers = <String, dynamic>{r'Authorization': apiKey};
+    _headers.removeWhere((k, v) => v == null);
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<HttpResponse<dynamic>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/trending/tv/${timeWindow}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
     final httpResponse = HttpResponse(_value, _result);
     return httpResponse;
   }
