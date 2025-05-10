@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBackgroundColor,
-      body: _screens[_currentIndex], // 👈 ici tu changes juste ça
+      body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigation(
         currentIndex: _currentIndex,
         onTabChange: (index) => setState(() => _currentIndex = index),
@@ -101,6 +101,44 @@ class _TestScreenState extends State<TestScreen> {
                   ),
                 ],
               ),
+
+              const SizedBox(height: 20,),
+
+              BlocBuilder<MovieRatedBloc, MovieRatedState>(
+                builder: (context, state) {
+                  if (state.status.isSuccess && state.movieRatedList.isNotEmpty) {
+                    final List topFiveMovies = state.movieRatedList.take(5).toList();
+
+                    return SizedBox(
+                      height: 300,
+                      child: CarouselView.weighted(
+                        flexWeights: [1, 7, 1],
+                        controller: _controller,
+                        children: topFiveMovies.map((movie) {
+                          return Container(
+                            height: 300,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  "https://image.tmdb.org/t/p/w500${movie.backdropPath}",
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+
+                  return const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()));
+                },
+              ),
+
+
+
+
+
 
               SectionHeaderRow(
                 text: "Top Rated Movies",
