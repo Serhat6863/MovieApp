@@ -23,22 +23,25 @@ class MovieRatedModel extends MovieEntity{
   factory MovieRatedModel.fromJson(Map<String, dynamic> json) {
     return MovieRatedModel(
       id: json['id'],
-      title: json['title'],
-      originalTitle: json['original_title'],
-      overview: json['overview'],
-      posterPath: json['poster_path'],
-      backdropPath: json['backdrop_path'],
-      originalLanguage: json['original_language'],
-      mediaType: json['media_type'],
-      releaseDate: json['release_date'],
-      genreIds: List<int>.from(json['genre_ids'].map((x) => x)),
-      popularity: json['popularity'].toDouble(),
-      voteAverage: json['vote_average'].toDouble(),
-      voteCount: json['vote_count'],
-      adult: json['adult'],
-      video: json['video'],
+      title: json['title'] ?? '',
+      originalTitle: json['original_title'] ?? '',
+      overview: json['overview'] ?? '',
+      posterPath: json['poster_path'] ?? '',
+      backdropPath: json['backdrop_path'] ?? '',
+      originalLanguage: json['original_language'] ?? '',
+      mediaType: json['media_type'] ?? '',
+      releaseDate: json['release_date'] ?? '',
+      genreIds: json['genre_ids'] != null
+          ? List<int>.from(json['genre_ids'].map((x) => x))
+          : [],
+      popularity: (json['popularity'] ?? 0).toDouble(),
+      voteAverage: (json['vote_average'] ?? 0).toDouble(),
+      voteCount: json['vote_count'] ?? 0,
+      adult: json['adult'] ?? false,
+      video: json['video'] ?? false,
     );
   }
+
 
   Map<String, dynamic> toJson() {
     return {

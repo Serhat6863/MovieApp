@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/features/home/presentation/bloc/tv_rated_bloc.dart';
 import 'package:movie_app/features/home/presentation/bloc/tv_rated_state.dart';
+import 'package:movie_app/features/home/presentation/screen/detail_screen.dart';
 import 'package:movie_app/features/home/presentation/widget/custom_list_view.dart';
 import 'package:movie_app/features/home/presentation/widget/section_header_row.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -129,6 +130,15 @@ class _TestScreenState extends State<TestScreen> {
                         }).toList(),
                       ),
                     );
+                  }else if(state.status.isLoading){
+                    return const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()));
+                  }else if(state.status.isFailure){
+                   return Center(
+                     child: Text(
+                       state.message,
+                       style: TextStyle(color: Colors.red),
+                     ),
+                   );
                   }
 
                   return const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()));
@@ -177,8 +187,20 @@ class _TestScreenState extends State<TestScreen> {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(6.0),
-                            child: CustomListView(
-                              imageUrl: "https://image.tmdb.org/t/p/w500${state.movieRatedList[index].posterPath}",
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailScreen(
+                                      id: state.movieRatedList[index].id,
+                                    )
+                                  )
+                                );
+                              },
+                              child: CustomListView(
+                                imageUrl: "https://image.tmdb.org/t/p/w500${state.movieRatedList[index].posterPath}",
+                              ),
                             ),
                           );
                         },

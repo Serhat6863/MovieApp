@@ -16,6 +16,12 @@ abstract class MediaApi {
     @Path("time_window") String timeWindow,
   );
 
+  @GET("/movie/{movie_id}")
+  Future<HttpResponse<MovieRatedModel>> getMovieDetail(
+    @Path("movie_id") int movieId,
+    @Header("Authorization") String apiKey,
+  );
+
   @GET("/trending/tv/{time_window}")
   Future<HttpResponse<dynamic>> getTvRated(
     @Query("language") String language,

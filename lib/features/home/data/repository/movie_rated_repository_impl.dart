@@ -35,4 +35,26 @@ class MovieRatedRepositoryImpl implements MovieRatedRepository {
       throw Exception('Failed to load movie rated: $e');
     }
   }
+
+  @override
+  Future<MovieEntity> getMovieDetail(int movieId) async {
+    try{
+      final response = await mediaApi.getMovieDetail(
+        movieId,
+        "Bearer $kApiKey",
+      );
+
+      if (response.response.statusCode != 200) {
+        throw Exception('Failed to load movie detail');
+      }
+
+      final data = response.data;
+
+      return data;
+
+    }catch(e){
+      throw Exception('Failed to load movie detail: $e');
+    }
+
+  }
 }
