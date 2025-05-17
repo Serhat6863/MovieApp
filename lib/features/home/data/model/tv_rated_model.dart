@@ -22,22 +22,27 @@ class TvRatedModel extends TvEntity {
   factory TvRatedModel.fromJson(Map<String, dynamic> json) {
     return TvRatedModel(
       id: json['id'],
-      name: json['name'],
-      originalName: json['original_name'],
-      overview: json['overview'],
-      posterPath: json['poster_path'],
-      backdropPath: json['backdrop_path'],
-      mediaType: json['media_type'],
-      originalLanguage: json['original_language'],
-      firstAirDate: json['first_air_date'],
-      adult: json['adult'],
-      popularity: json['popularity'].toDouble(),
-      voteAverage: json['vote_average'].toDouble(),
-      voteCount: json['vote_count'],
-      genreIds: List<int>.from(json['genre_ids'].map((x) => x)),
-      originCountry: List<String>.from(json['origin_country'].map((x) => x)),
+      name: json['name'] ?? '',
+      originalName: json['original_name'] ?? '',
+      overview: json['overview'] ?? '',
+      posterPath: json['poster_path'] ?? '',
+      backdropPath: json['backdrop_path'] ?? '',
+      mediaType: json['media_type'] ?? '',
+      originalLanguage: json['original_language'] ?? '',
+      firstAirDate: json['first_air_date'] ?? '',
+      adult: json['adult'] ?? false,
+      popularity: (json['popularity'] ?? 0).toDouble(),
+      voteAverage: (json['vote_average'] ?? 0).toDouble(),
+      voteCount: json['vote_count'] ?? 0,
+      genreIds: json['genre_ids'] != null
+          ? List<int>.from(json['genre_ids'].map((x) => x))
+          : [],
+      originCountry: json['origin_country'] != null
+          ? List<String>.from(json['origin_country'].map((x) => x))
+          : [],
     );
   }
+
 
   Map<String, dynamic> toJson() {
     return {

@@ -194,6 +194,7 @@ class _TestScreenState extends State<TestScreen> {
                                   MaterialPageRoute(
                                     builder: (context) => DetailScreen(
                                       id: state.movieRatedList[index].id,
+                                      mediaType: "movie",
                                     )
                                   )
                                 );
@@ -252,8 +253,21 @@ class _TestScreenState extends State<TestScreen> {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(6.0),
-                            child: CustomListView(
-                              imageUrl: "https://image.tmdb.org/t/p/w500${state.tvRatedList[index].posterPath}",
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailScreen(
+                                      id: state.tvRatedList[index].id,
+                                      mediaType: "tv",
+                                    )
+                                  )
+                                );
+                              },
+                              child: CustomListView(
+                                imageUrl: "https://image.tmdb.org/t/p/w500${state.tvRatedList[index].posterPath}",
+                              ),
                             ),
                           );
                         },

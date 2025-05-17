@@ -37,4 +37,30 @@ class TvRatedRepositoryImpl implements TvRatedRepository{
     }
   }
 
+  @override
+  Future<TvEntity> getTvDetail(int tvId) async{
+    try{
+      final response = await mediaApi.getTvDetail(
+        tvId,
+        "Bearer $kApiKey",
+      );
+
+
+      if(response.response.statusCode != 200){
+        throw Exception('Failed to load tv detail');
+      }
+
+
+      final data = response.data;
+
+      return data;
+
+    }catch(e){
+      throw Exception('Failed to load tv detail: $e');
+    }
+  }
+  
+  
+  
+
 }

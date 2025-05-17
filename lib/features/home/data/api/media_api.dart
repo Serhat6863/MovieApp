@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:movie_app/features/home/data/model/movie_rated_model.dart';
+import 'package:movie_app/features/home/data/model/tv_rated_model.dart';
 import 'package:retrofit/retrofit.dart';
 import '../../../../core/constant.dart';
 
@@ -27,6 +28,12 @@ abstract class MediaApi {
     @Query("language") String language,
     @Header("Authorization") String apiKey,
     @Path("time_window") String timeWindow,
+  );
+
+  @GET("/tv/{tv_id}")
+  Future<HttpResponse<TvRatedModel>> getTvDetail(
+    @Path("tv_id") int tvId,
+    @Header("Authorization") String apiKey,
   );
 
   @GET("/trending/person/{time_window}")
