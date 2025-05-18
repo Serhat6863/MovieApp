@@ -25,36 +25,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
-
-  final List<Widget> _screens = [
-    TestScreen(),
-    TestScreenSecond(),
-    TalScreen(),
-    TolScreen(),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigation(
-        currentIndex: _currentIndex,
-        onTabChange: (index) => setState(() => _currentIndex = index),
-      ),
-    );
-  }
-}
-
-class TestScreen extends StatefulWidget {
-  const TestScreen({super.key});
-
-  @override
-  State<TestScreen> createState() => _TestScreenState();
-}
-
-class _TestScreenState extends State<TestScreen> {
   final CarouselController _controller = CarouselController();
 
   @override
@@ -124,14 +94,27 @@ class _TestScreenState extends State<TestScreen> {
                           flexWeights: [1, 7, 1],
                           controller: _controller,
                           children: topFiveMovies.map((movie) {
-                            return Container(
-                              height: 300,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                    "https://image.tmdb.org/t/p/w500${movie.backdropPath}",
+                            return GestureDetector(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailScreen(
+                                      id: movie.id,
+                                      mediaType: "movie",
+                                    )
+                                  )
+                                );
+                              },
+                              child: Container(
+                                height: 300,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                      "https://image.tmdb.org/t/p/w500${movie.backdropPath}",
+                                    ),
+                                    fit: BoxFit.cover,
                                   ),
-                                  fit: BoxFit.cover,
                                 ),
                               ),
                             );
