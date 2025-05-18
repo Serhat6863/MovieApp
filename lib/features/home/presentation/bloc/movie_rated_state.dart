@@ -14,13 +14,13 @@ class MovieRatedState {
   final MovieRatedStatus status;
   final String message;
   final List<MovieEntity> movieRatedList;
-  final MovieEntity? movieRatedDetail;
+
 
   MovieRatedState({
     required this.status,
     required this.message,
     required this.movieRatedList,
-    this.movieRatedDetail,
+
   });
 
   factory MovieRatedState.initial() => MovieRatedState(
@@ -51,7 +51,7 @@ class MovieRatedState {
     status: MovieRatedStatus.detail,
     message: '',
     movieRatedList: [],
-    movieRatedDetail: movieRatedDetail,
+
   );
 
 
@@ -65,10 +65,9 @@ class MovieRatedState {
       status: status ?? this.status,
       message: message ?? this.message,
       movieRatedList: movieRatedList ?? this.movieRatedList,
-      movieRatedDetail: movieRatedDetail ?? this.movieRatedDetail,
     );
   }
 
   @override
-  List<Object> get props => [status, message, movieRatedList, movieRatedDetail ?? ''];
+  List<Object> get props => [status, message, movieRatedList];
 }

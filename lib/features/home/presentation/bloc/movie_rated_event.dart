@@ -14,11 +14,3 @@ class GetMovieRatedEvent extends MovieRatedEvent{
 }
 
 
-class GetMovieRatedEventById extends MovieRatedEvent{
-  final int id;
-
-  GetMovieRatedEventById(this.id);
-
-  @override
-  List<Object> get props => [id];
-}

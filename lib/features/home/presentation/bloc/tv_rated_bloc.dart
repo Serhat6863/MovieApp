@@ -9,7 +9,6 @@ class TvRatedBloc extends Bloc<TvRatedEvent, TvRatedState>{
 
   TvRatedBloc({required this.tvRatedRepositoryImpl}): super(TvRatedState.initial()){
     on<GetTvRatedEvent>(_getTvRated);
-    on<GetTvRatedEventById>(_getTvRatedById);
   }
 
 
@@ -23,15 +22,6 @@ class TvRatedBloc extends Bloc<TvRatedEvent, TvRatedState>{
     }
   }
 
-  Future<void> _getTvRatedById(GetTvRatedEventById event , Emitter<TvRatedState> emit) async{
-   emit(TvRatedState.loading());
-   try{
-     final tvRated = await tvRatedRepositoryImpl.getTvDetail(event.id);
-      emit(TvRatedState.detail(tvRated));
-   }catch(e){
-      emit(TvRatedState.failure(e.toString()));
-   }
-  }
 
 
 }

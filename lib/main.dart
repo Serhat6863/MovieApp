@@ -5,10 +5,12 @@ import 'package:movie_app/features/home/data/api/media_api.dart';
 import 'package:movie_app/features/home/data/repository/person_repository_impl.dart';
 import 'package:movie_app/features/home/data/repository/tv_rated_repository_impl.dart';
 import 'package:movie_app/features/home/presentation/bloc/movie_rated_bloc.dart';
+import 'package:movie_app/features/home/presentation/bloc/tv_detail_bloc.dart';
 import 'package:movie_app/features/splash/presentation/bloc/guest_bloc.dart';
 import 'package:movie_app/route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'features/home/data/repository/movie_rated_repository_impl.dart';
+import 'features/home/presentation/bloc/movie_detail_bloc.dart';
 import 'features/home/presentation/bloc/person_bloc.dart';
 import 'features/home/presentation/bloc/tv_rated_bloc.dart';
 import 'features/splash/data/api/guest_session_api.dart';
@@ -33,6 +35,7 @@ void main()  async{
 
   //person repository
   final personRepository = PersonRepositoryImpl(mediaApi: mediaApi);
+
 
   runApp(MyApp(guestSessionRepository: guestSessionRepository , sharedPreferences: prefs, movieRatedRepository: movieRatedRepository, tvRatedRepository: tvRatedRepository, personRepository: personRepository,));
 }
@@ -61,6 +64,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<PersonBloc>(
           create: (_) => PersonBloc(personRepositoryImpl: personRepository),
+        ),
+        BlocProvider<MovieDetailBloc>(
+          create: (_) => MovieDetailBloc(movieRatedRepositoryImpl: movieRatedRepository),
+        ),
+        BlocProvider<TvDetailBloc>(
+          create: (_) => TvDetailBloc(tvRatedRepositoryImpl: tvRatedRepository),
         ),
 
       ],

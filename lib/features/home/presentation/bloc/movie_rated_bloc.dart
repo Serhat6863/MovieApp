@@ -10,7 +10,6 @@ class MovieRatedBloc extends Bloc<MovieRatedEvent, MovieRatedState>{
 
   MovieRatedBloc({required this.movieRatedRepositoryImpl}): super(MovieRatedState.initial()){
     on<GetMovieRatedEvent>(_getMovieRated);
-    on<GetMovieRatedEventById>(_getMovieRatedById);
   }
 
 
@@ -24,17 +23,7 @@ class MovieRatedBloc extends Bloc<MovieRatedEvent, MovieRatedState>{
     }
   }
 
-  Future<void> _getMovieRatedById(GetMovieRatedEventById event, Emitter<MovieRatedState> emit) async{
-    emit(MovieRatedState.loading());
-    try{
-      print("fetching movie rated by id : ${event.id}");
-      final movieRated = await movieRatedRepositoryImpl.getMovieDetail(event.id);
-      print("movie fetched : ${movieRated.title}");
-      emit(MovieRatedState.detail(movieRated));
-    }catch(e){
-      emit(MovieRatedState.failure(e.toString()));
-    }
-  }
+
 
 
 

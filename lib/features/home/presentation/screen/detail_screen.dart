@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/constant.dart';
-import 'package:movie_app/features/home/presentation/bloc/movie_rated_bloc.dart';
-import 'package:movie_app/features/home/presentation/bloc/tv_rated_bloc.dart';
+import 'package:movie_app/features/home/presentation/bloc/movie_detail_state.dart';
 
-import '../bloc/movie_rated_event.dart';
-import '../bloc/movie_rated_state.dart';
-import '../bloc/tv_rated_event.dart';
-import '../bloc/tv_rated_state.dart';
+import 'package:movie_app/features/home/presentation/bloc/tv_detail_bloc.dart';
+import 'package:movie_app/features/home/presentation/bloc/tv_detail_state.dart';
+
+
+import '../bloc/movie_detail_bloc.dart';
+import '../bloc/movie_detail_event.dart';
+
+import '../bloc/tv_detail_event.dart';
+
 
 class DetailScreen extends StatefulWidget {
   const DetailScreen({super.key, required this.id, required this.mediaType,});
@@ -25,9 +29,9 @@ class _DetailScreenState extends State<DetailScreen> {
 
   void verifyMediaType(String mediaType){
     if(mediaType == "movie"){
-      context.read<MovieRatedBloc>().add(GetMovieRatedEventById(widget.id));
+      context.read<MovieDetailBloc>().add(GetMovieRatedEventById(widget.id));
     }else if(mediaType == "tv"){
-      context.read<TvRatedBloc>().add(GetTvRatedEventById(widget.id));
+      context.read<TvDetailBloc>().add(GetTvDetailEvent(widget.id));
     }
   }
 
@@ -68,14 +72,14 @@ class _DetailScreenState extends State<DetailScreen> {
       ),
       body: Center(
         child: widget.mediaType == "movie" ?
-        BlocBuilder<MovieRatedBloc, MovieRatedState>(
+        BlocBuilder<MovieDetailBloc, MovieDetailState>(
           builder: (context, state){
             if(state.status.isLoading){
               return const Center(child: CircularProgressIndicator());
-            }else if(state.status.isFailure){
+            }else if(state.status.isError){
               return Center(child: Text(state.message , style: const TextStyle(color: Colors.red),));
-            }else if(state.status.isDetail && state.movieRatedDetail != null){
-              final movie = state.movieRatedDetail!;
+            }else if(state.status.isLoaded){
+              final movie = state.movieDetail!;
 
 
               return Padding(
@@ -233,14 +237,14 @@ class _DetailScreenState extends State<DetailScreen> {
 
           },
         )
-            : BlocBuilder<TvRatedBloc , TvRatedState>(
+            : BlocBuilder<TvDetailBloc , TvDetailState>(
           builder: (context , state){
             if(state.status.isLoading){
               return const Center(child: CircularProgressIndicator());
-            }else if(state.status.isFailure){
+            }else if(state.status.isError){
               return Center(child: Text(state.message , style: const TextStyle(color: Colors.red),));
-            }else if(state.status.isDetail){
-              final tv = state.tvRated!;
+            }else if(state.status.isLoaded){
+              final tv = state.tvDetail!;
 
               return Padding(
                 padding: const EdgeInsets.all(12.0),

@@ -15,13 +15,13 @@ class TvRatedState{
   final TvRatedStatus status;
   final String message;
   final List<TvEntity> tvRatedList;
-  final TvEntity? tvRated;
+
 
   TvRatedState({
     required this.status,
     required this.message,
     required this.tvRatedList,
-    this.tvRated,
+
   });
 
   factory TvRatedState.initial() => TvRatedState(
@@ -52,7 +52,6 @@ class TvRatedState{
     status: TvRatedStatus.detail,
     message: '',
     tvRatedList: [],
-    tvRated: tvRated,
   );
 
 
@@ -66,11 +65,11 @@ class TvRatedState{
       status: status ?? this.status,
       message: message ?? this.message,
       tvRatedList: tvRatedList ?? this.tvRatedList,
-      tvRated: tvRated ?? this.tvRated,
+
     );
   }
 
   @override
-  List<Object> get props => [status, message, tvRatedList , tvRated ?? ''];
+  List<Object> get props => [status, message, tvRatedList];
 
 }
