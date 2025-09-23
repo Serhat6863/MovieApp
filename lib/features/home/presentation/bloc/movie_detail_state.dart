@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/movie_rated_entities.dart';
 
 enum MovieDetailStatus {
@@ -16,12 +18,12 @@ extension MovieDetailStateX on MovieDetailStatus {
 
 
 
-class MovieDetailState{
+class MovieDetailState extends Equatable{
   final MovieDetailStatus status;
   final String message;
   final MovieEntity ? movieDetail;
 
-  MovieDetailState({
+  const MovieDetailState({
     required this.status,
     required this.message,
     this.movieDetail,

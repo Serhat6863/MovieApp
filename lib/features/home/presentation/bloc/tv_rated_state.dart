@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/tv_rated_entitties.dart';
 
 enum TvRatedStatus { initial, loading, success, failure , detail }
@@ -11,13 +13,13 @@ extension TvRatedStateX on TvRatedStatus{
 }
 
 
-class TvRatedState{
+class TvRatedState extends Equatable{
   final TvRatedStatus status;
   final String message;
   final List<TvEntity> tvRatedList;
 
 
-  TvRatedState({
+  const TvRatedState({
     required this.status,
     required this.message,
     required this.tvRatedList,

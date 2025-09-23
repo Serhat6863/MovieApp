@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/person_entities.dart';
 
 enum PersonStatus { initial, loading, success, failure }
@@ -11,12 +13,12 @@ extension PersonStateX on PersonStatus {
 }
 
 
-class PersonState{
+class PersonState extends Equatable{
   final PersonStatus status;
   final String message;
   final List<PersonEntity> personList;
 
-  PersonState({
+  const PersonState({
     required this.status,
     required this.message,
     required this.personList,

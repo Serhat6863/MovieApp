@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/movie_rated_entities.dart';
 
 enum MovieRatedStatus { initial, loading, success, failure, detail }
@@ -10,13 +12,13 @@ extension MovieRatedStateX on MovieRatedStatus {
   bool get isDetail => this == MovieRatedStatus.detail;
 }
 
-class MovieRatedState {
+class MovieRatedState extends Equatable {
   final MovieRatedStatus status;
   final String message;
   final List<MovieEntity> movieRatedList;
 
 
-  MovieRatedState({
+  const MovieRatedState({
     required this.status,
     required this.message,
     required this.movieRatedList,

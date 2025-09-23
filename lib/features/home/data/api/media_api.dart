@@ -31,7 +31,7 @@ abstract class MediaApi {
   );
 
   @GET("/tv/{tv_id}")
-  Future<HttpResponse<TvRatedModel>> getTvDetail(
+  Future<HttpResponse<TvRatedModel  >> getTvDetail(
     @Path("tv_id") int tvId,
     @Header("Authorization") String apiKey,
   );

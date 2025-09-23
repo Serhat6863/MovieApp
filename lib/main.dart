@@ -1,83 +1,72 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/features/home/data/api/media_api.dart';
-import 'package:movie_app/features/home/data/repository/person_repository_impl.dart';
-import 'package:movie_app/features/home/data/repository/tv_rated_repository_impl.dart';
 import 'package:movie_app/features/home/presentation/bloc/movie_rated_bloc.dart';
+import 'package:movie_app/features/home/presentation/bloc/tv_rated_bloc.dart';
+import 'package:movie_app/features/home/presentation/bloc/person_bloc.dart';
+import 'package:movie_app/features/home/presentation/bloc/movie_detail_bloc.dart';
 import 'package:movie_app/features/home/presentation/bloc/tv_detail_bloc.dart';
-import 'package:movie_app/features/splash/presentation/bloc/guest_bloc.dart';
-import 'package:movie_app/route.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'features/home/data/repository/movie_rated_repository_impl.dart';
-import 'features/home/presentation/bloc/movie_detail_bloc.dart';
-import 'features/home/presentation/bloc/person_bloc.dart';
-import 'features/home/presentation/bloc/tv_rated_bloc.dart';
-import 'features/splash/data/api/guest_session_api.dart';
-import 'features/splash/data/repository/guest_session_repository_impl.dart';
+import 'package:movie_app/features/home/data/repository/movie_rated_repository_impl.dart';
+import 'package:movie_app/features/home/data/repository/tv_rated_repository_impl.dart';
+import 'package:movie_app/features/home/data/repository/person_repository_impl.dart';
+import 'package:movie_app/features/home/data/api/media_api.dart';
+import 'package:dio/dio.dart';
+import 'package:movie_app/features/search/presentation/bloc/search_bloc.dart';
 
-void main()  async{
+import 'features/home/presentation/screen/home_navigation.dart';
+import 'features/search/data/api/search_result_api.dart';
+import 'features/search/data/repository/search_result_repository_impl.dart';
 
-  WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-
-  //guest session repository
+void main() {
   final dio = Dio();
-  final guestSessionApi = GuestSessionApi(dio);
-  final guestSessionRepository = GuestSessionRepositoryImpl(guestSessionApi , prefs);
-
-  //movie rated repository
+  //api movie
   final mediaApi = MediaApi(dio);
-  final movieRatedRepository = MovieRatedRepositoryImpl(mediaApi: mediaApi);
 
-  //tv rated repository
-  final tvRatedRepository = TvRatedRepositoryImpl(mediaApi: mediaApi);
+  //api search
+  final searchResultApi = SearchResultApi(dio);
 
-  //person repository
-  final personRepository = PersonRepositoryImpl(mediaApi: mediaApi);
+  final movieRepo = MovieRatedRepositoryImpl(mediaApi: mediaApi);
+  final tvRepo = TvRatedRepositoryImpl(mediaApi: mediaApi);
+  final personRepo = PersonRepositoryImpl(mediaApi: mediaApi);
+  final searchRepo = SearchResultRepositoryImpl(searchResultApi: searchResultApi);
 
-
-  runApp(MyApp(guestSessionRepository: guestSessionRepository , sharedPreferences: prefs, movieRatedRepository: movieRatedRepository, tvRatedRepository: tvRatedRepository, personRepository: personRepository,));
+  runApp(MyApp(
+    movieRepo: movieRepo,
+    tvRepo: tvRepo,
+    personRepo: personRepo,
+    searchRepo: searchRepo,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  final GuestSessionRepositoryImpl guestSessionRepository;
-  final MovieRatedRepositoryImpl movieRatedRepository;
-  final TvRatedRepositoryImpl tvRatedRepository;
-  final PersonRepositoryImpl personRepository;
-  final SharedPreferences sharedPreferences;
+  final MovieRatedRepositoryImpl movieRepo;
+  final TvRatedRepositoryImpl tvRepo;
+  final PersonRepositoryImpl personRepo;
+  final SearchResultRepositoryImpl searchRepo;
 
-  const MyApp({super.key, required this.guestSessionRepository, required this.sharedPreferences, required this.movieRatedRepository, required this.tvRatedRepository, required this.personRepository});
+  const MyApp({
+    super.key,
+    required this.movieRepo,
+    required this.tvRepo,
+    required this.personRepo,
+    required this.searchRepo,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<GuestBloc>(
-          create: (_) => GuestBloc(guestSessionRepositoryImpl: guestSessionRepository, sharedPreferences: sharedPreferences),
-        ),
-        BlocProvider<MovieRatedBloc>(
-          create: (_) => MovieRatedBloc(movieRatedRepositoryImpl: movieRatedRepository),
-        ),
-        BlocProvider<TvRatedBloc>(
-          create: (_) => TvRatedBloc(tvRatedRepositoryImpl: tvRatedRepository),
-        ),
-        BlocProvider<PersonBloc>(
-          create: (_) => PersonBloc(personRepositoryImpl: personRepository),
-        ),
-        BlocProvider<MovieDetailBloc>(
-          create: (_) => MovieDetailBloc(movieRatedRepositoryImpl: movieRatedRepository),
-        ),
-        BlocProvider<TvDetailBloc>(
-          create: (_) => TvDetailBloc(tvRatedRepositoryImpl: tvRatedRepository),
-        ),
-
+        BlocProvider(create: (_) => MovieRatedBloc(movieRatedRepositoryImpl: movieRepo)),
+        BlocProvider(create: (_) => TvRatedBloc(tvRatedRepositoryImpl: tvRepo)),
+        BlocProvider(create: (_) => PersonBloc(personRepositoryImpl: personRepo)),
+        BlocProvider(create: (_) => MovieDetailBloc(movieRatedRepositoryImpl: movieRepo)),
+        BlocProvider(create: (_) => TvDetailBloc(tvRatedRepositoryImpl: tvRepo)),
+        BlocProvider(create: (_) => SearchBloc(searchResultRepositoryImpl: searchRepo)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: "Movie App",
-        onGenerateRoute: AppRouter.generateRoute,
-        initialRoute: '/',
+        title: 'Movie App',
+        theme: ThemeData.dark(),
+        home: const HomeNavigation(),
       ),
     );
   }
