@@ -32,8 +32,6 @@ class BottomNavigation extends StatelessWidget {
           tabs: const [
             GButton(icon: Iconsax.home, text: "home"),
             GButton(icon: Iconsax.search_normal, text: "search"),
-            GButton(icon: Iconsax.heart, text: "favorite"),
-            GButton(icon: Iconsax.setting, text: "setting"),
           ],
         ),
       ),
