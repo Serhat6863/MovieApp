@@ -107,6 +107,113 @@ L’application propose une barre de navigation inférieure vous permettant de p
 
 ##  Captures d’écran et Démonstration
 
+Découvrez un aperçu visuel de **MovieApp**.
+
+---
+
+###  Écran d’accueil & Détails d’un film
+> Explorez les films et séries les mieux notés, puis accédez à une fiche détaillée en un clic.
+
+<p align="center">
+  <img src="screenshots/home_screen.png" alt="Home Screen" width="45%" />
+  <img src="screenshots/detail_screen.png" alt="Detail Screen" width="45%" />
+</p>
+
+---
+
+###  Recherche de films & séries
+> Recherchez instantanément vos films et séries préférés grâce à une interface simple et réactive.
+
+<p align="center">
+  <img src="screenshots/search_screen.png" alt="Search Screen" width="45%" />
+  <img src="screenshots/searh_screen_work.png" alt="Search Screen Results" width="45%" />
+</p>
+
+---
+
+###  Démonstration vidéo
+> Découvrez l’expérience complète en action : transitions, navigation et animations intégrées.
+
+<p align="center">
+  <img src="screenshots/movie_app_vid.gif" alt="MovieApp Demo" width="60%" />
+</p>
+
+---
+## Architecture du projet
+
+Voici l’arborescence du projet **MovieApp** :
+
+```bash
+MovieApp/
+├── android/                        
+├── ios/                            
+├── lib/                            
+│   ├── core/                       
+│   │   └── constant.dart           
+│   ├── features/                   
+│   │   ├── home/                   
+│   │   │   ├── data/               
+│   │   │   ├── domain/             
+│   │   │   └── presentation/       
+│   │   └── search/                 
+│   │       ├── data/               
+│   │       ├── domain/             
+│   │       └── presentation/       
+│   └── main.dart                   
+├── linux/                          
+├── macos/                          
+├── screenshots/                    # Captures d’écran utilisées dans le README
+├── test/                           
+│   └── features/                   
+│       ├── home/                   
+│       │   ├── data/               
+│       │   └── presentation/       
+│       │       └── bloc/           
+│       └── search/                 
+│           ├── data/               
+│           └── presentation/       
+│               └── bloc/           
+├── web/                            
+├── windows/                        
+├── .gitignore                      
+├── README.md                       
+├── pubspec.yaml                    
+├── pubspec.lock                    
+├── analysis_options.yaml           
+└── .metadata
+
+```
+
+---
+
+### Description des dossiers
+
+- **core/** → contient les **constantes globales**, les **couleurs**, les **styles** et les **utilitaires** réutilisables dans toute l’application.  
+- **features/home/** → gère **l’affichage des films et séries les mieux notés**, incluant la logique de récupération et la présentation des données.  
+- **features/search/** → contient toute la **logique de recherche** (films, séries) avec l’autocomplétion et la navigation vers les détails.  
+- **data/** → responsable de la **récupération, du parsing et de la transformation des données** (API TMDB, modèles, repositories).  
+- **domain/** → définit la **logique métier** de l’application (entités, interfaces de repository, use cases).  
+- **presentation/** → représente la **couche interface utilisateur (UI)**, avec les **écrans**, **widgets personnalisés**, et la **gestion d’état via BLoC**.  
+- **test/** → contient les **tests unitaires et d’intégration**, assurant la stabilité et la fiabilité du projet.  
+- **screenshots/** → regroupe les **captures d’écran et GIFs** utilisés dans la documentation (README).  
+---
+
+
+## Contact  
+
+Si vous souhaitez en savoir plus sur ce projet ou discuter de développement Flutter, n’hésitez pas à me contacter :  
+
+**kurkluserhat@gmail.com**   
+[GitHub – Serhat6863](https://github.com/Serhat6863)  
+
+---
+
+✨ Développé avec **Flutter**  
+© 2025 – Serhat KÜRKLÜ
+
+
+
+
 
 
 
