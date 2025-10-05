@@ -167,68 +167,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               const SizedBox(height: 20),
-
-              _buildSectionHeader("Popular Persons"),
-
-              const SizedBox(height: 10),
-
-              BlocBuilder<PersonBloc, PersonState>(
-                buildWhen: (previous, current) =>
-                current.status != previous.status ||
-                    current.personList != previous.personList ||
-                    current.message != previous.message,
-                builder: (context, state) {
-                  if (state.status.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state.status.isError) {
-                    return Text(
-                      state.message,
-                      style: const TextStyle(color: Colors.red),
-                    );
-                  } else if (state.status.isLoaded) {
-                    return SizedBox(
-                      height: 150,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: state.personList.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Column(
-                              children: [
-                                CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage: NetworkImage(
-                                    "https://image.tmdb.org/t/p/w500${state.personList[index].profilePath}",
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                SizedBox(
-                                  width: 100,
-                                  child: Text(
-                                    state.personList[index].name,
-                                    style: TextStyle(
-                                      color: kTextColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  }
-                  return const Center(
-                    child: Text("No Data", style: TextStyle(color: Colors.red)),
-                  );
-                },
-              ),
             ],
           ),
         ),
